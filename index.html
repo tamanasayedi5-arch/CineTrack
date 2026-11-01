@@ -1,0 +1,860 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>QuizMate | Study & Practice</title>
+  <style>
+/* QuizMate — simple responsive styling */
+:root {
+  --navy: #123b56;
+  --blue: #28749a;
+  --gold: #e3aa42;
+  --ink: #203443;
+  --muted: #71818c;
+  --paper: #f4f7f8;
+  --line: #e2e9ed;
+  --white: #ffffff;
+}
+
+* { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: Arial, Helvetica, sans-serif;
+  line-height: 1.6;
+}
+
+.topbar {
+  height: 72px;
+  padding: 0 max(6%, calc((100% - 1080px) / 2));
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--white);
+  border-bottom: 1px solid var(--line);
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  color: var(--navy);
+  font-size: 20px;
+  font-weight: 800;
+  text-decoration: none;
+  letter-spacing: -.4px;
+}
+
+.brand-mark {
+  width: 36px;
+  height: 36px;
+  display: grid;
+  place-items: center;
+  color: white;
+  background: var(--navy);
+  border-radius: 11px;
+}
+
+.top-note { color: var(--muted); font-size: 13px; }
+
+.container { width: min(900px, 88%); margin: 38px auto 50px; }
+
+.welcome {
+  min-height: 190px;
+  padding: 34px 38px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  overflow: hidden;
+  color: white;
+  background: linear-gradient(120deg, #123b56, #286d8d);
+  border-radius: 20px;
+  box-shadow: 0 12px 28px rgba(18, 59, 86, .12);
+}
+
+.eyebrow {
+  margin: 0 0 7px;
+  color: var(--gold);
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 1.7px;
+}
+
+h1 { margin: 0; font-size: clamp(27px, 5vw, 39px); line-height: 1.2; letter-spacing: -1px; }
+h1 span { color: #f2c46e; }
+.welcome-text { max-width: 470px; margin: 12px 0 0; color: #e1ebf0; font-size: 14px; }
+.welcome-icon { color: #f2c46e; font-size: 76px; padding: 0 18px; }
+
+.tabs {
+  display: flex;
+  gap: 8px;
+  margin: 25px 0 38px;
+  padding: 7px;
+  background: #e9eff2;
+  border-radius: 13px;
+}
+
+.tab {
+  flex: 1;
+  padding: 11px 9px;
+  border-radius: 9px;
+  color: #5d707c;
+  text-align: center;
+  text-decoration: none;
+  font-size: 13px;
+  font-weight: 700;
+  transition: background .2s, color .2s;
+}
+
+.tab:hover, .tab:focus-visible { color: var(--navy); background: #dce7ec; }
+.tab.active { color: white; background: var(--navy); }
+
+.section { margin: 0 0 43px; scroll-margin-top: 20px; }
+.section-heading { display: flex; align-items: end; justify-content: space-between; gap: 16px; margin-bottom: 17px; }
+.section-heading .eyebrow { color: #b17a20; }
+h2 { margin: 0; color: var(--navy); font-size: 25px; letter-spacing: -.5px; }
+.muted { margin: 4px 0 0; color: var(--muted); font-size: 13px; }
+.count { padding: 6px 10px; color: var(--blue); background: #e3f0f5; border-radius: 20px; font-size: 10px; font-weight: 800; letter-spacing: .8px; }
+
+.question-card, .list-card, .form-card {
+  margin-bottom: 13px;
+  padding: 21px 23px;
+  background: var(--white);
+  border: 1px solid var(--line);
+  border-radius: 15px;
+  box-shadow: 0 5px 16px rgba(24, 55, 72, .035);
+}
+
+.question-top { display: flex; align-items: center; gap: 10px; }
+.number, .list-number { color: #b17a20; font-size: 12px; font-weight: 800; }
+.topic, .tag { padding: 4px 9px; color: #527183; background: #edf3f6; border-radius: 20px; font-size: 10px; font-weight: 800; letter-spacing: .5px; }
+h3 { margin: 13px 0 3px; color: var(--ink); font-size: 17px; }
+.answer-hint { margin: 0 0 13px; color: var(--muted); font-size: 12px; }
+
+.answer { border-top: 1px solid var(--line); padding-top: 11px; }
+.answer summary { width: fit-content; color: var(--blue); font-size: 12px; font-weight: 800; cursor: pointer; }
+.answer p { margin: 9px 0 0; padding: 11px 13px; color: #36586a; background: #f0f6f8; border-radius: 9px; font-size: 13px; }
+
+.list-row { display: flex; align-items: center; gap: 15px; min-height: 55px; border-bottom: 1px solid var(--line); font-size: 13px; }
+.list-row:last-child { border-bottom: 0; }
+.list-row > span:nth-child(2) { flex: 1; font-weight: 700; }
+.tag { font-weight: 600; letter-spacing: 0; }
+
+.form-card { display: grid; gap: 9px; }
+.form-card label { margin-top: 7px; color: var(--ink); font-size: 12px; font-weight: 800; }
+textarea, select {
+  width: 100%;
+  padding: 12px 13px;
+  color: var(--ink);
+  background: #fbfcfd;
+  border: 1px solid #dce5e9;
+  border-radius: 9px;
+  outline: none;
+  font: inherit;
+  font-size: 13px;
+  resize: vertical;
+}
+textarea:focus, select:focus { border-color: var(--blue); box-shadow: 0 0 0 3px rgba(40, 116, 154, .1); }
+.submit-button {
+  margin-top: 10px;
+  padding: 12px 18px;
+  color: white;
+  background: var(--navy);
+  border: 0;
+  border-radius: 9px;
+  font-size: 13px;
+  font-weight: 800;
+  cursor: pointer;
+}
+.submit-button:hover { background: #205b79; }
+.form-note { margin: 0; color: var(--muted); font-size: 11px; }
+
+footer { padding: 18px 0 0; color: #8998a1; text-align: center; font-size: 11px; }
+footer span { padding: 0 5px; color: var(--gold); }
+
+@media (max-width: 600px) {
+  .topbar { height: 62px; padding: 0 6%; }
+  .top-note { font-size: 11px; }
+  .container { width: 90%; margin-top: 22px; }
+  .welcome { min-height: 170px; padding: 25px 22px; border-radius: 15px; }
+  .welcome-icon { padding: 0; font-size: 48px; }
+  .tabs { gap: 4px; padding: 5px; margin: 18px 0 30px; }
+  .tab { padding: 9px 4px; font-size: 10px; }
+  .section-heading { align-items: start; }
+  h2 { font-size: 22px; }
+  .count { white-space: nowrap; font-size: 9px; }
+  .question-card, .list-card, .form-card { padding: 17px; }
+  .list-row { gap: 9px; font-size: 12px; }
+  .tag { font-size: 9px; }
+}
+
+
+/* JavaScript-added question styles */
+.empty-state { padding: 22px; color: var(--muted); text-align: center; font-size: 13px; }
+.form-note.success { color: #24734d; font-weight: 700; }
+.form-note.error { color: #b33c36; font-weight: 700; }
+
+</style>
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="#" aria-label="QuizMate home">
+      <span class="brand-mark">Q</span>
+      <span>QuizMate</span>
+    </a>
+    <span class="top-note">Learn a little every day</span>
+  </header>
+
+  <main class="container">
+    <section class="welcome">
+      <div>
+        <p class="eyebrow">YOUR PERSONAL STUDY SPACE</p>
+        <h1>Learn. Practice. <span>Remember.</span></h1>
+        <p class="welcome-text">Keep your questions in one place and make every study session count.</p>
+      </div>
+      <div class="welcome-icon" aria-hidden="true">✦</div>
+    </section>
+
+    <nav class="tabs" aria-label="Quiz app sections">
+      <a class="tab active" href="#study">Study Questions</a>
+      <a class="tab" href="#all-questions">All Questions</a>
+      <a class="tab" href="#add-question">Add a Question</a>
+    </nav>
+
+    <section class="section" id="study">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">PRACTICE MODE</p>
+          <h2>Study questions</h2>
+          <p class="muted">Try to answer before you reveal the answer.</p>
+        </div>
+        <span class="count">03 QUESTIONS</span>
+      </div>
+
+      <div id="study-list"></div>
+    </section>
+
+    <section class="section" id="all-questions">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">YOUR QUESTION BANK</p>
+          <h2>All questions</h2>
+          <p class="muted">A quick list of the questions in this demo.</p>
+        </div>
+      </div>
+      <div class="list-card" id="all-questions-list"></div>
+    </section>
+
+    <section class="section" id="add-question">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">GROW YOUR KNOWLEDGE</p>
+          <h2>Add a question</h2>
+          <p class="muted">Complete the form design below. JavaScript can make it save new questions later.</p>
+        </div>
+      </div>
+      <form class="form-card" id="question-form">
+        <label for="question">Your question</label>
+        <textarea id="question" placeholder="Write your question here..." rows="3" required></textarea>
+
+        <label for="answer">Correct answer</label>
+        <textarea id="answer" placeholder="Write the answer here..." rows="3" required></textarea>
+
+        <label for="category">Topic</label>
+        <select id="category" required>
+          <option value="">Choose a topic</option>
+          <option>Computer Basics</option>
+          <option>HTML</option>
+          <option>CSS</option>
+          <option>General Knowledge</option>
+        </select>
+
+        <button type="submit" class="submit-button">Add question</button>
+        <p class="form-note" id="form-message" aria-live="polite">Your new question will appear in Study Questions and All Questions.</p>
+      </form>
+    </section>
+    <footer>QuizMate <span>•</span> A simple space for better learning</footer>
+  </main>
+
+<script>
+  // The questions array is the data used by both sections.
+  const starterQuestions = [
+    {
+      id: 1,
+      question: "What is a computer?",
+      answer: "A computer is an electronic device that stores and processes data.",
+      category: "Computer Basics"
+    },
+    {
+      id: 2,
+      question: "What does HTML stand for?",
+      answer: "HTML stands for HyperText Markup Language.",
+      category: "HTML"
+    },
+    {
+      id: 3,
+      question: "What is CSS used for?",
+      answer: "CSS is used to style web pages, including colors, spacing, and layout.",
+      category: "CSS"
+    }
+  ];
+
+  let questions = loadQuestions();
+
+  function loadQuestions() {
+    try {
+      const saved = localStorage.getItem("quizmate-questions");
+      return saved ? JSON.parse(saved) : starterQuestions;
+    } catch (error) {
+      return starterQuestions;
+    }
+  }
+
+  function saveQuestions() {
+    try {
+      localStorage.setItem("quizmate-questions", JSON.stringify(questions));
+    } catch (error) {
+      // The app still works for the current browser session if storage is unavailable.
+    }
+  }
+
+  function renderQuestions() {
+    const studyList = document.getElementById("study-list");
+    const allList = document.getElementById("all-questions-list");
+
+    studyList.innerHTML = "";
+    allList.innerHTML = "";
+
+    if (questions.length === 0) {
+      studyList.innerHTML = '<div class="question-card empty-state">No questions yet. Add your first question below.</div>';
+      allList.innerHTML = '<div class="empty-state">Your question list is empty.</div>';
+    }
+
+    questions.forEach((item, index) => {
+      const card = document.createElement("article");
+      card.className = "question-card";
+
+      const top = document.createElement("div");
+      top.className = "question-top";
+
+      const number = document.createElement("span");
+      number.className = "number";
+      number.textContent = String(index + 1).padStart(2, "0");
+
+      const topic = document.createElement("span");
+      topic.className = "topic";
+      topic.textContent = item.category;
+
+      const heading = document.createElement("h3");
+      heading.textContent = item.question;
+
+      const hint = document.createElement("p");
+      hint.className = "answer-hint";
+      hint.textContent = "Try to answer before you reveal the answer.";
+
+      const details = document.createElement("details");
+      details.className = "answer";
+
+      const summary = document.createElement("summary");
+      summary.textContent = "Show answer";
+
+      const answerText = document.createElement("p");
+      answerText.textContent = item.answer;
+
+      top.append(number, topic);
+      details.append(summary, answerText);
+      card.append(top, heading, hint, details);
+      studyList.appendChild(card);
+
+      const row = document.createElement("div");
+      row.className = "list-row";
+
+      const listNumber = document.createElement("span");
+      listNumber.className = "list-number";
+      listNumber.textContent = String(index + 1).padStart(2, "0");
+
+      const questionText = document.createElement("span");
+      questionText.textContent = item.question;
+
+      const tag = document.createElement("span");
+      tag.className = "tag";
+      tag.textContent = item.category;
+
+      row.append(listNumber, questionText, tag);
+      allList.appendChild(row);
+    });
+
+    const count = document.querySelector(".count");
+    count.textContent = String(questions.length).padStart(2, "0") + " QUESTIONS";
+  }
+
+  document.getElementById("question-form").addEventListener("submit", function(event) {
+    event.preventDefault();
+
+    const questionInput = document.getElementById("question");
+    const answerInput = document.getElementById("answer");
+    const categoryInput = document.getElementById("category");
+    const message = document.getElementById("form-message");
+
+    const newQuestion = {
+      id: Date.now(),
+      question: questionInput.value.trim(),
+      answer: answerInput.value.trim(),
+      category: categoryInput.value
+    };
+
+    if (!newQuestion.question || !newQuestion.answer || !newQuestion.category) {
+      message.textContent = "Please complete all fields.";
+      message.className = "form-note error";
+      return;
+    }
+
+    questions.push(newQuestion);
+    saveQuestions();
+    renderQuestions();
+
+    this.reset();
+    message.textContent = "Question added! It is now visible in both sections.";
+    message.className = "form-note success";
+  });
+
+  renderQuestions();
+</script>
+
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>QuizMate | Study & Practice</title>
+  <style>
+/* QuizMate — simple responsive styling */
+:root {
+  --navy: #123b56;
+  --blue: #28749a;
+  --gold: #e3aa42;
+  --ink: #203443;
+  --muted: #71818c;
+  --paper: #f4f7f8;
+  --line: #e2e9ed;
+  --white: #ffffff;
+}
+
+* { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: Arial, Helvetica, sans-serif;
+  line-height: 1.6;
+}
+
+.topbar {
+  height: 72px;
+  padding: 0 max(6%, calc((100% - 1080px) / 2));
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--white);
+  border-bottom: 1px solid var(--line);
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  color: var(--navy);
+  font-size: 20px;
+  font-weight: 800;
+  text-decoration: none;
+  letter-spacing: -.4px;
+}
+
+.brand-mark {
+  width: 36px;
+  height: 36px;
+  display: grid;
+  place-items: center;
+  color: white;
+  background: var(--navy);
+  border-radius: 11px;
+}
+
+.top-note { color: var(--muted); font-size: 13px; }
+
+.container { width: min(900px, 88%); margin: 38px auto 50px; }
+
+.welcome {
+  min-height: 190px;
+  padding: 34px 38px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  overflow: hidden;
+  color: white;
+  background: linear-gradient(120deg, #123b56, #286d8d);
+  border-radius: 20px;
+  box-shadow: 0 12px 28px rgba(18, 59, 86, .12);
+}
+
+.eyebrow {
+  margin: 0 0 7px;
+  color: var(--gold);
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 1.7px;
+}
+
+h1 { margin: 0; font-size: clamp(27px, 5vw, 39px); line-height: 1.2; letter-spacing: -1px; }
+h1 span { color: #f2c46e; }
+.welcome-text { max-width: 470px; margin: 12px 0 0; color: #e1ebf0; font-size: 14px; }
+.welcome-icon { color: #f2c46e; font-size: 76px; padding: 0 18px; }
+
+.tabs {
+  display: flex;
+  gap: 8px;
+  margin: 25px 0 38px;
+  padding: 7px;
+  background: #e9eff2;
+  border-radius: 13px;
+}
+
+.tab {
+  flex: 1;
+  padding: 11px 9px;
+  border-radius: 9px;
+  color: #5d707c;
+  text-align: center;
+  text-decoration: none;
+  font-size: 13px;
+  font-weight: 700;
+  transition: background .2s, color .2s;
+}
+
+.tab:hover, .tab:focus-visible { color: var(--navy); background: #dce7ec; }
+.tab.active { color: white; background: var(--navy); }
+
+.section { margin: 0 0 43px; scroll-margin-top: 20px; }
+.section-heading { display: flex; align-items: end; justify-content: space-between; gap: 16px; margin-bottom: 17px; }
+.section-heading .eyebrow { color: #b17a20; }
+h2 { margin: 0; color: var(--navy); font-size: 25px; letter-spacing: -.5px; }
+.muted { margin: 4px 0 0; color: var(--muted); font-size: 13px; }
+.count { padding: 6px 10px; color: var(--blue); background: #e3f0f5; border-radius: 20px; font-size: 10px; font-weight: 800; letter-spacing: .8px; }
+
+.question-card, .list-card, .form-card {
+  margin-bottom: 13px;
+  padding: 21px 23px;
+  background: var(--white);
+  border: 1px solid var(--line);
+  border-radius: 15px;
+  box-shadow: 0 5px 16px rgba(24, 55, 72, .035);
+}
+
+.question-top { display: flex; align-items: center; gap: 10px; }
+.number, .list-number { color: #b17a20; font-size: 12px; font-weight: 800; }
+.topic, .tag { padding: 4px 9px; color: #527183; background: #edf3f6; border-radius: 20px; font-size: 10px; font-weight: 800; letter-spacing: .5px; }
+h3 { margin: 13px 0 3px; color: var(--ink); font-size: 17px; }
+.answer-hint { margin: 0 0 13px; color: var(--muted); font-size: 12px; }
+
+.answer { border-top: 1px solid var(--line); padding-top: 11px; }
+.answer summary { width: fit-content; color: var(--blue); font-size: 12px; font-weight: 800; cursor: pointer; }
+.answer p { margin: 9px 0 0; padding: 11px 13px; color: #36586a; background: #f0f6f8; border-radius: 9px; font-size: 13px; }
+
+.list-row { display: flex; align-items: center; gap: 15px; min-height: 55px; border-bottom: 1px solid var(--line); font-size: 13px; }
+.list-row:last-child { border-bottom: 0; }
+.list-row > span:nth-child(2) { flex: 1; font-weight: 700; }
+.tag { font-weight: 600; letter-spacing: 0; }
+
+.form-card { display: grid; gap: 9px; }
+.form-card label { margin-top: 7px; color: var(--ink); font-size: 12px; font-weight: 800; }
+textarea, select {
+  width: 100%;
+  padding: 12px 13px;
+  color: var(--ink);
+  background: #fbfcfd;
+  border: 1px solid #dce5e9;
+  border-radius: 9px;
+  outline: none;
+  font: inherit;
+  font-size: 13px;
+  resize: vertical;
+}
+textarea:focus, select:focus { border-color: var(--blue); box-shadow: 0 0 0 3px rgba(40, 116, 154, .1); }
+.submit-button {
+  margin-top: 10px;
+  padding: 12px 18px;
+  color: white;
+  background: var(--navy);
+  border: 0;
+  border-radius: 9px;
+  font-size: 13px;
+  font-weight: 800;
+  cursor: pointer;
+}
+.submit-button:hover { background: #205b79; }
+.form-note { margin: 0; color: var(--muted); font-size: 11px; }
+
+footer { padding: 18px 0 0; color: #8998a1; text-align: center; font-size: 11px; }
+footer span { padding: 0 5px; color: var(--gold); }
+
+@media (max-width: 600px) {
+  .topbar { height: 62px; padding: 0 6%; }
+  .top-note { font-size: 11px; }
+  .container { width: 90%; margin-top: 22px; }
+  .welcome { min-height: 170px; padding: 25px 22px; border-radius: 15px; }
+  .welcome-icon { padding: 0; font-size: 48px; }
+  .tabs { gap: 4px; padding: 5px; margin: 18px 0 30px; }
+  .tab { padding: 9px 4px; font-size: 10px; }
+  .section-heading { align-items: start; }
+  h2 { font-size: 22px; }
+  .count { white-space: nowrap; font-size: 9px; }
+  .question-card, .list-card, .form-card { padding: 17px; }
+  .list-row { gap: 9px; font-size: 12px; }
+  .tag { font-size: 9px; }
+}
+
+
+/* JavaScript-added question styles */
+.empty-state { padding: 22px; color: var(--muted); text-align: center; font-size: 13px; }
+.form-note.success { color: #24734d; font-weight: 700; }
+.form-note.error { color: #b33c36; font-weight: 700; }
+
+</style>
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="#" aria-label="QuizMate home">
+      <span class="brand-mark">Q</span>
+      <span>QuizMate</span>
+    </a>
+    <span class="top-note">Learn a little every day</span>
+  </header>
+
+  <main class="container">
+    <section class="welcome">
+      <div>
+        <p class="eyebrow">YOUR PERSONAL STUDY SPACE</p>
+        <h1>Learn. Practice. <span>Remember.</span></h1>
+        <p class="welcome-text">Keep your questions in one place and make every study session count.</p>
+      </div>
+      <div class="welcome-icon" aria-hidden="true">✦</div>
+    </section>
+
+    <nav class="tabs" aria-label="Quiz app sections">
+      <a class="tab active" href="#study">Study Questions</a>
+      <a class="tab" href="#all-questions">All Questions</a>
+      <a class="tab" href="#add-question">Add a Question</a>
+    </nav>
+
+    <section class="section" id="study">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">PRACTICE MODE</p>
+          <h2>Study questions</h2>
+          <p class="muted">Try to answer before you reveal the answer.</p>
+        </div>
+        <span class="count">03 QUESTIONS</span>
+      </div>
+
+      <div id="study-list"></div>
+    </section>
+
+    <section class="section" id="all-questions">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">YOUR QUESTION BANK</p>
+          <h2>All questions</h2>
+          <p class="muted">A quick list of the questions in this demo.</p>
+        </div>
+      </div>
+      <div class="list-card" id="all-questions-list"></div>
+    </section>
+
+    <section class="section" id="add-question">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">GROW YOUR KNOWLEDGE</p>
+          <h2>Add a question</h2>
+          <p class="muted">Complete the form design below. JavaScript can make it save new questions later.</p>
+        </div>
+      </div>
+      <form class="form-card" id="question-form">
+        <label for="question">Your question</label>
+        <textarea id="question" placeholder="Write your question here..." rows="3" required></textarea>
+
+        <label for="answer">Correct answer</label>
+        <textarea id="answer" placeholder="Write the answer here..." rows="3" required></textarea>
+
+        <label for="category">Topic</label>
+        <select id="category" required>
+          <option value="">Choose a topic</option>
+          <option>Computer Basics</option>
+          <option>HTML</option>
+          <option>CSS</option>
+          <option>General Knowledge</option>
+        </select>
+
+        <button type="submit" class="submit-button">Add question</button>
+        <p class="form-note" id="form-message" aria-live="polite">Your new question will appear in Study Questions and All Questions.</p>
+      </form>
+    </section>
+    <footer>QuizMate <span>•</span> A simple space for better learning</footer>
+  </main>
+
+<script>
+  // The questions array is the data used by both sections.
+  const starterQuestions = [
+    {
+      id: 1,
+      question: "What is a computer?",
+      answer: "A computer is an electronic device that stores and processes data.",
+      category: "Computer Basics"
+    },
+    {
+      id: 2,
+      question: "What does HTML stand for?",
+      answer: "HTML stands for HyperText Markup Language.",
+      category: "HTML"
+    },
+    {
+      id: 3,
+      question: "What is CSS used for?",
+      answer: "CSS is used to style web pages, including colors, spacing, and layout.",
+      category: "CSS"
+    }
+  ];
+
+  let questions = loadQuestions();
+
+  function loadQuestions() {
+    try {
+      const saved = localStorage.getItem("quizmate-questions");
+      return saved ? JSON.parse(saved) : starterQuestions;
+    } catch (error) {
+      return starterQuestions;
+    }
+  }
+
+  function saveQuestions() {
+    try {
+      localStorage.setItem("quizmate-questions", JSON.stringify(questions));
+    } catch (error) {
+      // The app still works for the current browser session if storage is unavailable.
+    }
+  }
+
+  function renderQuestions() {
+    const studyList = document.getElementById("study-list");
+    const allList = document.getElementById("all-questions-list");
+
+    studyList.innerHTML = "";
+    allList.innerHTML = "";
+
+    if (questions.length === 0) {
+      studyList.innerHTML = '<div class="question-card empty-state">No questions yet. Add your first question below.</div>';
+      allList.innerHTML = '<div class="empty-state">Your question list is empty.</div>';
+    }
+
+    questions.forEach((item, index) => {
+      const card = document.createElement("article");
+      card.className = "question-card";
+
+      const top = document.createElement("div");
+      top.className = "question-top";
+
+      const number = document.createElement("span");
+      number.className = "number";
+      number.textContent = String(index + 1).padStart(2, "0");
+
+      const topic = document.createElement("span");
+      topic.className = "topic";
+      topic.textContent = item.category;
+
+      const heading = document.createElement("h3");
+      heading.textContent = item.question;
+
+      const hint = document.createElement("p");
+      hint.className = "answer-hint";
+      hint.textContent = "Try to answer before you reveal the answer.";
+
+      const details = document.createElement("details");
+      details.className = "answer";
+
+      const summary = document.createElement("summary");
+      summary.textContent = "Show answer";
+
+      const answerText = document.createElement("p");
+      answerText.textContent = item.answer;
+
+      top.append(number, topic);
+      details.append(summary, answerText);
+      card.append(top, heading, hint, details);
+      studyList.appendChild(card);
+
+      const row = document.createElement("div");
+      row.className = "list-row";
+
+      const listNumber = document.createElement("span");
+      listNumber.className = "list-number";
+      listNumber.textContent = String(index + 1).padStart(2, "0");
+
+      const questionText = document.createElement("span");
+      questionText.textContent = item.question;
+
+      const tag = document.createElement("span");
+      tag.className = "tag";
+      tag.textContent = item.category;
+
+      row.append(listNumber, questionText, tag);
+      allList.appendChild(row);
+    });
+
+    const count = document.querySelector(".count");
+    count.textContent = String(questions.length).padStart(2, "0") + " QUESTIONS";
+  }
+
+  document.getElementById("question-form").addEventListener("submit", function(event) {
+    event.preventDefault();
+
+    const questionInput = document.getElementById("question");
+    const answerInput = document.getElementById("answer");
+    const categoryInput = document.getElementById("category");
+    const message = document.getElementById("form-message");
+
+    const newQuestion = {
+      id: Date.now(),
+      question: questionInput.value.trim(),
+      answer: answerInput.value.trim(),
+      category: categoryInput.value
+    };
+
+    if (!newQuestion.question || !newQuestion.answer || !newQuestion.category) {
+      message.textContent = "Please complete all fields.";
+      message.className = "form-note error";
+      return;
+    }
+
+    questions.push(newQuestion);
+    saveQuestions();
+    renderQuestions();
+
+    this.reset();
+    message.textContent = "Question added! It is now visible in both sections.";
+    message.className = "form-note success";
+  });
+
+  renderQuestions();
+</script>
+
+</body>
+</html>
